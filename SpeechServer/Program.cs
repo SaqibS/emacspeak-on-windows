@@ -13,8 +13,8 @@
             {
                 while (true)
                 {
-                    string line = Console.ReadLine();
-                    if (string.IsNullOrWhiteSpace(line))
+                    string line = Console.ReadLine().Trim();
+                    if (line.Length == 0)
                     {
                         continue;
                     }
