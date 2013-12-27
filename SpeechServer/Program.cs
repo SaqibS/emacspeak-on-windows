@@ -1,18 +1,14 @@
 ﻿namespace EmacspeakWindowsSpeechServer
 {
     using System;
-    using System.Linq;
     using System.IO;
+    using System.Reflection;
     using System.Text;
 
     internal static class Program
     {
-        private static bool debugMode = false;
-
         internal static void Main(string[] args)
         {
-            debugMode = args.Any(x => x.Equals("-debug", StringComparison.OrdinalIgnoreCase));
-
             try
             {
                 while (true)
@@ -29,19 +25,19 @@
             }
             catch (Exception x)
             {
-                if (debugMode)
-                {
-                    LogException(x);
-                }
+                LogException(x);
             }
         }
 
         private static void LogException(Exception x)
         {
-            const string Filename = "EmacspeakWindowsSpeechServer.log";
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), Filename);
-            using (var sw = new StreamWriter(path, true, Encoding.UTF8))
+            // Calculate the log filename.
+            string executingAssemblyPath = Assembly.GetExecutingAssembly().CodeBase;
+            string logPath = Path.Combine(Path.GetDirectoryName(executingAssemblyPath), Path.GetFileNameWithoutExtension(executingAssemblyPath) + ".log");
+
+            using (var sw = new StreamWriter(logPath, true, Encoding.UTF8))
             {
+                sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 sw.WriteLine("Exception of type {0} was caught.", x.GetType().FullName);
                 sw.WriteLine("Message: {0}", x.Message);
 
