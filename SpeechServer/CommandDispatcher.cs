@@ -20,7 +20,7 @@
             { "q", SpeechManager.QueueText },
             { "a", SpeechManager.QueueAudio },
             { "t", NotImplemented },
-            { "sh", NotImplemented },
+            { "sh", SpeechManager.QueueSilence },
             { "tts_reset", SpeechManager.Reset },
             { "tts_set_punctuations", NotImplemented },
             { "tts_set_speech_rate", SpeechManager.SetRate },

@@ -97,6 +97,17 @@
             promptBuilder.AppendAudio(args[0]);
         }
 
+        public static void QueueSilence(IList<string> args)
+        {
+            int duration;
+            if (args == null || args.Count < 1 || !int.TryParse(args[0], out duration))
+            {
+                return;
+            }
+
+            promptBuilder.AppendBreak(TimeSpan.FromMilliseconds(duration));
+        }
+
         public static void Reset(IList<string> args)
         {
             lock (lockObject)
