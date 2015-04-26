@@ -1,7 +1,6 @@
 ﻿namespace EmacspeakWindowsSpeechServer
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Speech.Synthesis;
 
@@ -12,7 +11,7 @@
         private static PromptBuilder promptBuilder = new PromptBuilder(CultureInfo.CurrentUICulture);
         private static double characterScaleFactor = 1.0;
 
-        public static void Version(IList<string> args)
+        public static void Version(string[] args)
         {
             Version version = System.Environment.OSVersion.Version;
             lock (lockObject)
@@ -22,9 +21,9 @@
             }
         }
 
-        public static void Say(IList<string> args)
+        public static void Say(string[] args)
         {
-            if (args == null || args.Count < 1)
+            if (args == null || args.Length < 1)
             {
                 return;
             }
@@ -36,9 +35,9 @@
             }
         }
 
-        public static void SayCharacter(IList<string> args)
+        public static void SayCharacter(string[] args)
         {
-            if (args == null || args.Count < 1 || args[0].Length == 0)
+            if (args == null || args.Length < 1 || args[0].Length == 0)
             {
                 return;
             }
@@ -53,7 +52,7 @@
             }
         }
 
-        public static void Dispatch(IList<string> args)
+        public static void Dispatch(string[] args)
         {
             lock (lockObject)
             {
@@ -62,24 +61,24 @@
             }
         }
 
-        public static void Pause(IList<string> args)
+        public static void Pause(string[] args)
         {
             synth.Pause();
         }
 
-        public static void Resume(IList<string> args)
+        public static void Resume(string[] args)
         {
             synth.Resume();
         }
 
-        public static void StopSpeaking(IList<string> args)
+        public static void StopSpeaking(string[] args)
         {
             synth.SpeakAsyncCancelAll();
         }
 
-        public static void QueueText(IList<string> args)
+        public static void QueueText(string[] args)
         {
-            if (args == null || args.Count < 1 || args[0].Length == 0)
+            if (args == null || args.Length < 1 || args[0].Length == 0)
             {
                 return;
             }
@@ -87,9 +86,9 @@
             promptBuilder.AppendText(args[0]);
         }
 
-        public static void QueueAudio(IList<string> args)
+        public static void QueueAudio(string[] args)
         {
-            if (args == null || args.Count < 1)
+            if (args == null || args.Length < 1)
             {
                 return;
             }
@@ -97,10 +96,10 @@
             promptBuilder.AppendAudio(args[0]);
         }
 
-        public static void QueueSilence(IList<string> args)
+        public static void QueueSilence(string[] args)
         {
             int duration;
-            if (args == null || args.Count < 1 || !int.TryParse(args[0], out duration))
+            if (args == null || args.Length < 1 || !int.TryParse(args[0], out duration))
             {
                 return;
             }
@@ -108,7 +107,7 @@
             promptBuilder.AppendBreak(TimeSpan.FromMilliseconds(duration));
         }
 
-        public static void Reset(IList<string> args)
+        public static void Reset(string[] args)
         {
             lock (lockObject)
             {
@@ -117,10 +116,10 @@
             }
         }
 
-        public static void SetRate(IList<string> args)
+        public static void SetRate(string[] args)
         {
             int rate;
-            if (args == null || args.Count < 1 || !int.TryParse(args[0], out rate))
+            if (args == null || args.Length < 1 || !int.TryParse(args[0], out rate))
             {
                 return;
             }
@@ -137,10 +136,10 @@
             synth.Rate = rate;
         }
 
-        public static void SetCharacterScale(IList<string> args)
+        public static void SetCharacterScale(string[] args)
         {
             double scaleFactor;
-            if (args == null || args.Count < 1 || !double.TryParse(args[0], out scaleFactor))
+            if (args == null || args.Length < 1 || !double.TryParse(args[0], out scaleFactor))
             {
                 return;
             }

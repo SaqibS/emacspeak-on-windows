@@ -12,8 +12,6 @@ For convenience I have also included a preassembled archive in this repository, 
 
 This first version of the TTS server was really a proof of concept so that I could use Emacspeak more. Depending how much I use it, and how much interest I get from others, I may spend the time to make it more robust. Of course, pull requests are welcome.
 
-* The default speaking rate is very fast, since Emacspeak sets the rate in words-per-minute, whereas the Windows API expects a value in the range -10 to +10.
-* The code for parsing commands needs to be made more robust regarding cases like a single word argument that starts with a left brace, or a multi word argument that contains a right brace.
 * There is a bug where sometimes Emacspeak goes silent. This can be repro'd by pressing c-g (quit) twice, for example.
 * At present there is no real speech queue, and commands are just dispatched in a single block. This means that, for example, if a queue of commands is dispatched to the TTS engine, and part way through a message is spoken immediately, we have lost the rest of the queue. However, in practicle usage this seems to be ok.
 * Handling punctuation is delegated to the TTS engine, which isn't sufficient for our purposes. We should keep our own mapping of punctuation names, and which symbols should be spoken when the mode is set to none/some/all punctuation.

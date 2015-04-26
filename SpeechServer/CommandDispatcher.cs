@@ -5,7 +5,7 @@
 
     internal static class CommandDispatcher
     {
-        private delegate void CommandHandler(IList<string> args);
+        private delegate void CommandHandler(string[] args);
 
         // Maps command names to methods.
         private static Dictionary<string, CommandHandler> commandTable = new Dictionary<string, CommandHandler>

@@ -6,72 +6,40 @@
     internal class Command
     {
         public string Name { get; set; }
-        public IList<string> Arguments { get; private set; }
+        public string[] Arguments { get; private set; }
 
         public static Command Parse(string line)
         {
-            // Everything up to the first space is the command name.
-            int pos = 0;
-            string token = GetNextToken(line, ref pos, ' ');
+            // Each command consists of an initial command word,
+            // followed by either {a series of words in braces}
+            // or a series of space-separated arguments.
 
-            var cmd = new Command
+            // Find first word.
+            line = line.TrimStart();
+            int i = 0;
+            while (i < line.Length && line[i] != ' ')
             {
-                Name = token.ToLower(),
-                Arguments = new List<string>()
-            };
+                i++;
+            }
 
-            // From here on, each word is an argument.
-            // Arguments containing a space are {surrounded in braces}.
-            while (pos < line.Length)
+            var cmd = new Command();
+            cmd.Name = line.Substring(0, i);
+
+            string args = line.Substring(i).Trim();
+            if (string.IsNullOrEmpty(args))
             {
-                SkipWhitespace(line, ref pos);
-                if (pos >= line.Length)
-                {
-                    break;
-                }
-
-                char delimiter = ' ';
-                if (pos < line.Length - 1 && line[pos] == '{')
-                {
-                    pos++;
-                    delimiter = '}';
-                }
-
-                token = GetNextToken(line, ref pos, delimiter);
-                if (!char.IsWhiteSpace(delimiter))
-                {
-                    pos++;
-                }
-
-                if (token.Length > 0)
-                {
-                    cmd.Arguments.Add(token);
-                }
+                cmd.Arguments = new string[0];
+            }
+            else if (args.StartsWith("{") && args.EndsWith("}"))
+            {
+                cmd.Arguments = new string[] { args.Substring(1, args.Length - 2) };
+            }
+            else
+            {
+                cmd.Arguments = args.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             }
 
             return cmd;
-        }
-
-        // Note: Pos will be updated to point to the first character following the token, or lastChar+1.
-                private static string GetNextToken(string s, ref int pos, char delimiter)
-        {
-            int newPos = s.IndexOf(delimiter, pos);
-            if (newPos < 0)
-            {
-                newPos = s.Length;
-            }
-
-            string token = s.Substring(pos, newPos - pos);
-            pos = newPos;
-            return token;
-        }
-
-        private static void SkipWhitespace(string s, ref int pos)
-        {
-            while (pos < s.Length && char.IsWhiteSpace(s[pos]))
-            {
-                pos++;
-            }
         }
     }
 }
