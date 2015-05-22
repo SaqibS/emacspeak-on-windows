@@ -11,7 +11,7 @@
         public static Command Parse(string line)
         {
             // Each command consists of an initial command word,
-            // followed by either {a series of words in braces}
+            // optionally followed by either {a series of words in braces}
             // or a series of space-separated arguments.
 
             // Find first word.

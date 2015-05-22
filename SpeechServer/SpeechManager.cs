@@ -86,16 +86,6 @@
             promptBuilder.AppendText(args[0]);
         }
 
-        public static void QueueAudio(string[] args)
-        {
-            if (args == null || args.Length < 1)
-            {
-                return;
-            }
-
-            promptBuilder.AppendAudio(args[0]);
-        }
-
         public static void QueueSilence(string[] args)
         {
             int duration;

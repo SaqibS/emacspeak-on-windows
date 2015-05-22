@@ -32,7 +32,7 @@
         private static void LogException(Exception x)
         {
             // Calculate the log filename.
-            string executingAssemblyPath = Assembly.GetExecutingAssembly().CodeBase;
+            string executingAssemblyPath = Assembly.GetExecutingAssembly().Location;
             string logPath = Path.Combine(Path.GetDirectoryName(executingAssemblyPath), Path.GetFileNameWithoutExtension(executingAssemblyPath) + ".log");
 
             using (var sw = new StreamWriter(logPath, true, Encoding.UTF8))

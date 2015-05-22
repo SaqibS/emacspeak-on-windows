@@ -18,7 +18,7 @@
             { "tts_resume", SpeechManager.Resume },
             { "s", SpeechManager.StopSpeaking },
             { "q", SpeechManager.QueueText },
-            { "a", SpeechManager.QueueAudio },
+            { "p", AudioManager.PlayAudio },
             { "t", NotImplemented },
             { "sh", SpeechManager.QueueSilence },
             { "tts_reset", SpeechManager.Reset },
