@@ -10,7 +10,7 @@ For convenience I have also included a preassembled archive in this repository, 
 
 ## Current Status
 
-This first version of the TTS server was really a proof of concept so that I could use Emacspeak more. Depending how much I use it, and how much interest I get from others, I may spend the time to make it more robust. Of course, pull requests are welcome. In particular, the full auditory interface is not currently available, as playing of tones, and changing of voices, needs to be implemented.
+This first version of the TTS server was really a proof of concept so that I could use Emacspeak more. Depending how much I use it, and how much interest I get from others, I may spend the time to make it more robust. Of course, pull requests are welcome. In particular, using multiple voices is not currently implemented.
 
 ## Trying It Out
 
@@ -18,7 +18,7 @@ This first version of the TTS server was really a proof of concept so that I cou
 
 First, you must download Emacs for Windows. You can find details on the [Emacs homepage](http://gnu.org/software/emacs).
 
-Personally, I have been working with Emacs 24.5, which is available at [http://ftp.gnu.org/gnu/emacs/windows/emacs-24.5-bin-i686-mingw32.zip].
+Personally, I have been working with Emacs 24.5, which is available at [http://ftp.gnu.org/gnu/emacs/windows/emacs-24.5-bin-i686-mingw32.zip]. In order to get EWW (the Emacs Web Wowser) to work, you also need the LibXML2 library, which you can get [here](http://sourceforge.net/projects/ezwinports/files).
 
 ### Use the Preassembled Archive
 
@@ -39,19 +39,21 @@ To start Emacs with Emacspeak enabled, run emacs_dir\bin\emacspeak.cmd. Though n
  * make emacspeak
  * make install prefix=/c/emacs
 * Compile the speech server using the command line compiler that comes with Windows, or download a copy of Visual Studio Express. Copy it into the emacs/share/emacs/site-lisp/emacspeak/servers directory.
-* Set the environment variable dtk_program=windows.
-* Finally, start Emacs with a command like c:\emacs\bin\emacs -q -l c:\emacs\share\emacs\site-lisp\emacspeak\lisp\emacspeak-setup.el.
+* Set the environment variable dtk_program=windows, and finally, start Emacs with a command like c:\emacs\bin\emacs -q -l c:\emacs\share\emacs\site-lisp\emacspeak\lisp\emacspeak-setup.el. Alternatively, load Emacspeak in your .emacs file (see below).
 
 ### Emacs Configuration
 
 This is a purely optional step. While the emacspeak.cmd script is an easy way to get up and running, you may want to customize your Emacs configuration file, to load Emacspeak and set various settings.
 
-The start of my %UserProfile%\.emacs file is below (many more customizations can be made):
+For some reason, Emacs looks for your .emacs file in %home%, instead of %userprofile%. So, make sure you've defined that.
+
+The start of my .emacs file is below (many more customizations can be made):
 
     (setenv "dtk_program" "windows")
     (load-file "c:/emacs/share/emacs/site-lisp/emacspeak/lisp/emacspeak-setup.el")
     (dtk-set-rate 5 t)
     (emacspeak-toggle-auditory-icons t)
+    (emacspeak-sounds-select-theme "chimes-stereo/")
 
 ## Feedback
 
