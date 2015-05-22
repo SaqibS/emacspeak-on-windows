@@ -6,7 +6,6 @@
 
     internal static class SpeechManager
     {
-        private static readonly object lockObject = new object();
         private static SpeechSynthesizer synth = new SpeechSynthesizer();
         private static PromptBuilder promptBuilder = new PromptBuilder(CultureInfo.CurrentUICulture);
         private static double characterScaleFactor = 1.0;
@@ -14,11 +13,8 @@
         public static void Version(string[] args)
         {
             Version version = System.Environment.OSVersion.Version;
-            lock (lockObject)
-            {
-                synth.SpeakAsyncCancelAll();
-                synth.SpeakAsync(string.Format("{0}.{1}", version.Major, version.Minor));
-            }
+            synth.SpeakAsyncCancelAll();
+            synth.SpeakAsync(string.Format("{0}.{1}", version.Major, version.Minor));
         }
 
         public static void Say(string[] args)
@@ -28,11 +24,8 @@
                 return;
             }
 
-            lock (lockObject)
-            {
-                synth.SpeakAsyncCancelAll();
-                synth.SpeakAsync(args[0]);
-            }
+            synth.SpeakAsyncCancelAll();
+            synth.SpeakAsync(args[0]);
         }
 
         public static void SayCharacter(string[] args)
@@ -42,23 +35,17 @@
                 return;
             }
 
-            lock (lockObject)
-            {
-                synth.SpeakAsyncCancelAll();
-                int originalRate = synth.Rate;
-                synth.Rate = (int)Math.Round(((synth.Rate + 10) * characterScaleFactor) - 10);
-                synth.SpeakAsync(args[0][0].ToString());
-                synth.Rate = originalRate;
-            }
+            synth.SpeakAsyncCancelAll();
+            int originalRate = synth.Rate;
+            synth.Rate = (int)Math.Round(((synth.Rate + 10) * characterScaleFactor) - 10);
+            synth.SpeakAsync(args[0][0].ToString());
+            synth.Rate = originalRate;
         }
 
         public static void Dispatch(string[] args)
         {
-            lock (lockObject)
-            {
-                synth.SpeakAsync(promptBuilder);
-                promptBuilder = new PromptBuilder();
-            }
+            synth.SpeakAsync(promptBuilder);
+            promptBuilder.ClearContent();
         }
 
         public static void Pause(string[] args)
@@ -99,11 +86,8 @@
 
         public static void Reset(string[] args)
         {
-            lock (lockObject)
-            {
-                synth = new SpeechSynthesizer();
-                promptBuilder = new PromptBuilder();
-            }
+            synth = new SpeechSynthesizer();
+            promptBuilder = new PromptBuilder();
         }
 
         public static void SetRate(string[] args)
