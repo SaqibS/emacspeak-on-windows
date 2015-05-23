@@ -26,7 +26,7 @@
             { "tts_set_speech_rate", SpeechManager.SetRate },
             { "tts_set_character_scale", SpeechManager.SetCharacterScale },
             { "tts_split_caps", NotImplemented },
-            { "tts_capitalize", NotImplemented },
+            { "tts_capitalize", SpeechManager.Capitalize },
             { "tts_allcaps_beep", NotImplemented }
                     };
 

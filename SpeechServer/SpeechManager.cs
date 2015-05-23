@@ -9,6 +9,7 @@
     {
         private static SpeechSynthesizer synth = new SpeechSynthesizer();
         private static PromptBuilder promptBuilder = new PromptBuilder(CultureInfo.CurrentUICulture);
+        private static bool capitalize = true;
                 private static double characterScaleFactor = 1.0;
 
         public static void Version(string[] args)
@@ -50,7 +51,7 @@
             sb.Append("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + CultureInfo.CurrentUICulture.IetfLanguageTag + "\">");
             sb.Append("<prosody rate=\"");
             sb.Append(characterScaleFactor);
-            sb.Append(char.IsUpper(c) ? "\" pitch=\"x-high\">" : "\">");
+            sb.Append(capitalize && char.IsUpper(c) ? "\" pitch=\"x-high\">" : "\">");
             sb.Append("<say-as interpret-as=\"characters\" format=\"characters\">");
             sb.Append(c);
             sb.Append("</say-as></prosody></speak>");
@@ -134,6 +135,17 @@
             }
 
             characterScaleFactor = scaleFactor;
+        }
+
+        public static void Capitalize(string[] args)
+        {
+            int flag;
+            if (args == null || args.Length < 1 || !int.TryParse(args[0], out flag))
+            {
+                return;
+            }
+
+            capitalize = flag > 0;
         }
     }
 }
