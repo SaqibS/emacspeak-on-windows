@@ -3,12 +3,13 @@
     using System;
     using System.Globalization;
     using System.Speech.Synthesis;
+    using System.Text;
 
     internal static class SpeechManager
     {
         private static SpeechSynthesizer synth = new SpeechSynthesizer();
         private static PromptBuilder promptBuilder = new PromptBuilder(CultureInfo.CurrentUICulture);
-        private static double characterScaleFactor = 1.0;
+                private static double characterScaleFactor = 1.0;
 
         public static void Version(string[] args)
         {
@@ -36,10 +37,24 @@
             }
 
             synth.SpeakAsyncCancelAll();
-            int originalRate = synth.Rate;
-            synth.Rate = (int)Math.Round(((synth.Rate + 10) * characterScaleFactor) - 10);
-            synth.SpeakAsync(args[0][0].ToString());
-            synth.Rate = originalRate;
+            char c = args[0][0];
+
+            // Special case for punctuation not spoken correctly by SAPI.
+            if (Punctuation.Replacements.ContainsKey(c))
+            {
+                synth.SpeakAsync(Punctuation.Replacements[c]);
+                return;
+            }
+            
+            var sb = new StringBuilder(capacity: 256);
+            sb.Append("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + CultureInfo.CurrentUICulture.IetfLanguageTag + "\">");
+            sb.Append("<prosody rate=\"");
+            sb.Append(characterScaleFactor);
+            sb.Append(char.IsUpper(c) ? "\" pitch=\"x-high\">" : "\">");
+            sb.Append("<say-as interpret-as=\"characters\" format=\"characters\">");
+            sb.Append(c);
+            sb.Append("</say-as></prosody></speak>");
+            synth.SpeakSsmlAsync(sb.ToString());
         }
 
         public static void Dispatch(string[] args)
